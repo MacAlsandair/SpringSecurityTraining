@@ -38,7 +38,7 @@ public class StudentManagementController {
 	
 	@PutMapping(path = "{studentId}")
 	public void updateStudent (@PathVariable("studentId") Integer studentId, @RequestBody Student student) {
-		System.out.println(String.format("%s %s", student, student));
+		System.out.println(String.format("%s %s", studentId, student));
 		
 	}
 	
