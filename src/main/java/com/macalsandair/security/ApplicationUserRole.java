@@ -15,6 +15,9 @@ public enum ApplicationUserRole {
 	private ApplicationUserRole(Set<ApplicationUserPermission> permissions) {
 		this.permissions = permissions;
 	}
-	
-	
+
+	public Set<ApplicationUserPermission> getPermissions() {
+		return permissions;
+	}
+		
 }
