@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+
 @SuppressWarnings("deprecation")
 @Configuration 
 @EnableWebSecurity
@@ -30,6 +31,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 			.antMatchers("/", "/index", "/css/*", "/js/*")
 			.permitAll()
+			.antMatchers("/api/*").hasRole(ApplicationUserRole.STUDENT.name())
 			.anyRequest()
 			.authenticated()
 			.and()
@@ -52,7 +54,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.roles(ApplicationUserRole.ADMIN.name())
 				.build();
 		
-		return new InMemoryUserDetailsManager(annaSmithUser, lindaUser);
+		UserDetails tomUser = User.builder()
+				.username("tom")
+				.password(passwordEncoder.encode("password"))
+				.roles(ApplicationUserRole.ADMINTRAINEE.name())
+				.build();
+		
+		return new InMemoryUserDetailsManager(annaSmithUser, lindaUser, tomUser);
 
 	}
 
