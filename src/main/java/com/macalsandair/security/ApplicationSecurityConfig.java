@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import static com.macalsandair.security.ApplicationUserRole.*;
 
 
 @SuppressWarnings("deprecation")
@@ -52,19 +53,21 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.username("annasmith")
 				.password(passwordEncoder.encode("password"))
 				//.roles(ApplicationUserRole.STUDENT.name())
-				.authorities()
+				.authorities(STUDENT.getGrantedAuthorities())
 				.build();
 		
 		UserDetails lindaUser = User.builder()
 				.username("linda")
 				.password(passwordEncoder.encode("password"))
 				//.roles(ApplicationUserRole.ADMIN.name())
+				.authorities(ADMIN.getGrantedAuthorities())
 				.build();
 		
 		UserDetails tomUser = User.builder()
 				.username("tom")
 				.password(passwordEncoder.encode("password"))
 				//.roles(ApplicationUserRole.ADMINTRAINEE.name())
+				.authorities(ADMINTRAINEE.getGrantedAuthorities())
 				.build();
 		
 		return new InMemoryUserDetailsManager(annaSmithUser, lindaUser, tomUser);
