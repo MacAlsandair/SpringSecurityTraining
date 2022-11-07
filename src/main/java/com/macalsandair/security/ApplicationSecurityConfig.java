@@ -71,7 +71,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.build();
 		
 		return new InMemoryUserDetailsManager(annaSmithUser, lindaUser, tomUser);
-
+//test
 	}
 
 	
