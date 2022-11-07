@@ -3,6 +3,7 @@ package com.macalsandair.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -33,6 +34,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/", "/index", "/css/*", "/js/*")
 			.permitAll()
 			.antMatchers("/api/*").hasRole(ApplicationUserRole.STUDENT.name())
+			.antMatchers(HttpMethod.DELETE, "management/api/**").hasAuthority(ApplicationUserPermission.COURSE_WRITE.name())
+			.antMatchers(HttpMethod.POST, "management/api/**").hasAuthority(ApplicationUserPermission.COURSE_WRITE.name())
+			.antMatchers(HttpMethod.PUT, "management/api/**").hasAuthority(ApplicationUserPermission.COURSE_WRITE.name())
+			.antMatchers(HttpMethod.GET, "management/api/**").hasAnyRole(ApplicationUserRole.ADMIN.name(), ApplicationUserRole.ADMINTRAINEE.name())
 			.anyRequest()
 			.authenticated()
 			.and()
@@ -46,19 +51,20 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 				.builder()
 				.username("annasmith")
 				.password(passwordEncoder.encode("password"))
-				.roles(ApplicationUserRole.STUDENT.name())
+				//.roles(ApplicationUserRole.STUDENT.name())
+				.authorities()
 				.build();
 		
 		UserDetails lindaUser = User.builder()
 				.username("linda")
 				.password(passwordEncoder.encode("password"))
-				.roles(ApplicationUserRole.ADMIN.name())
+				//.roles(ApplicationUserRole.ADMIN.name())
 				.build();
 		
 		UserDetails tomUser = User.builder()
 				.username("tom")
 				.password(passwordEncoder.encode("password"))
-				.roles(ApplicationUserRole.ADMINTRAINEE.name())
+				//.roles(ApplicationUserRole.ADMINTRAINEE.name())
 				.build();
 		
 		return new InMemoryUserDetailsManager(annaSmithUser, lindaUser, tomUser);
